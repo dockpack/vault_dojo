@@ -1,0 +1,5 @@
+---
+vault_port: 8200
+vault_tls_ca_file: ca.crt
+vault_tls_config_path: "{{ lookup('env','VAULT_TLS_DIR') | default('/etc/vault/tls', true) }}"
+...

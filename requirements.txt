@@ -1,0 +1,6 @@
+ansible==2.8.8
+netaddr
+python-consul
+hvac
+cryptography
+

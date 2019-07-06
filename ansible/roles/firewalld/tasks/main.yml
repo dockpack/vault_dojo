@@ -1,0 +1,56 @@
+---
+
+- name: Enable gossip tcp in firewalld
+  when: inventory_hostname in groups['consul_instances']
+  firewalld:
+    port: '{{ item }}/tcp'
+    permanent: true
+    state: enabled
+    immediate: true
+  with_items:
+    - 8301
+
+- name: Enable gossip udp in firewalld
+  when: inventory_hostname in groups['consul_instances']
+  firewalld:
+    port: '{{ item }}/udp'
+    permanent: true
+    state: enabled
+    immediate: true
+  with_items:
+    - 8301
+
+- name: Enable consul server access in firewalld
+  when: consul_node_role is defined and consul_node_role == 'server'
+  firewalld:
+    port: '{{ item }}/tcp'
+    permanent: true
+    state: enabled
+    immediate: true
+  with_items:
+    - 8300
+    - 8302
+    - 8501
+    - 8502
+
+- name: Enable server udp in firewalld
+  when: consul_node_role is defined and consul_node_role == 'server'
+  firewalld:
+    port: '{{ item }}/udp'
+    permanent: true
+    state: enabled
+    immediate: true
+  with_items:
+    - 8302
+    - 8502
+    - 8600
+
+- name: Enable vault server access in firewalld
+  when: inventory_hostname in groups['vault_instances']
+  firewalld:
+    port: '{{ item }}/tcp'
+    permanent: true
+    state: enabled
+    immediate: true
+  with_items:
+    - 8200

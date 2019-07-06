@@ -1,0 +1,27 @@
+---
+consul_iface: enp0s8
+consul_install_remotely: true
+consul_datacenter: "dc1"
+consul_acl_datacenter: "dc1"
+consul_acl_enable: true
+consul_domain: "consul"
+# DNS resolvers
+consul_recursors: ['8.8.4.4', '8.8.8.8']
+consul_dnsmasq_enable: true
+consul_dnsmasq_servers:
+  - 8.8.4.4
+  - 8.8.8.8
+# TLS
+consul_tls_enable: true
+consul_tls_src_files: files/tls
+consul_tls_ca_crt: consul-agent-ca.pem
+# Constants:
+consul_client_address: "0.0.0.0"
+consul_acl_master_token_display: true
+consul_enable_script_checks: true
+consul_disable_update_check: true
+### Logging
+consul_log_rotate_max_files: 10
+### Extra ports configuration
+consul_ports_https: 8501
+

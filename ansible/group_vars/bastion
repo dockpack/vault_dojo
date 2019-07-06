@@ -1,0 +1,42 @@
+---
+
+# Change from user private groups to 'ssh_groups:'
+manage_ssh_groups: true
+# Confine users to seuser classes
+semanage_ssh_users: true
+manage_ssh_users: true
+
+non_users:
+  - ftp
+
+ssh_users:
+  - username: vagrant
+    shell: /bin/bash
+    group: wheel
+    seuser: unconfined_u
+  - username: admin
+    shell: /bin/bash
+    group: wheel
+    seuser: staff_u
+  - username: basmeijer
+    shell: /bin/bash
+    group: staff
+    seuser: user_u
+  - username: fbezema
+    shell: /bin/bash
+    group: staff
+    seuser: user_u
+  - username: ksatirli
+    shell: /bin/bash
+    group: staff
+    seuser: user_u
+  - username: ferhaty
+    shell: /bin/bash
+    group: staff
+    seuser: user_u
+
+signed_ssh_keys: true
+distribute_ssh_keys: true
+ChallengeResponseAuthentication: 'yes'
+#  PasswordAuthentication: 'yes'
+hashicorp_vault_ssh: true

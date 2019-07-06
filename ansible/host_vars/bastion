@@ -1,0 +1,3 @@
+
+consul_tls_server_crt: dc1-client-consul-0.pem
+consul_server_key: dc1-client-consul-0-key.pem

@@ -1,0 +1,12 @@
+---
+vault_policies:
+  - admin-policy
+  - engines-policy
+  - policies-policy
+  - secret-policy
+
+vault_user: vault
+vault_group: bin
+
+vault_tls_config_path: "{{ lookup('env','VAULT_TLS_DIR') | default('/etc/vault/tls', true) }}"
+vault_credentials: '/Volumes/Keybase/team/dockpack/vault.json'

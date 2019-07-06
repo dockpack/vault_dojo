@@ -1,0 +1,167 @@
+{
+  "builders": [
+    {
+      "changes": [
+        "WORKDIR /home/centos",
+        "CMD [\"/bin/bash\"]",
+        "ENTRYPOINT [\"\"]"
+      ],
+      "commit": true,
+      "image": "{{user `base_image`}}",
+      "run_command": [
+        "-d", "-i", "-t", "--network=host", "--entrypoint=/bin/sh", "--", "{{.Image}}"
+      ],
+      "type": "docker"
+    },
+    {
+      "boot_command": [
+        "<tab> append initrd=initrd.img inst.text inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos7.cfg noipv6<enter><wait>"
+      ],
+      "cpus": 4,
+      "guest_additions_mode": "upload",
+      "guest_additions_path": "VBoxGuestAdditions.iso",
+      "guest_os_type": "RedHat_64",
+      "headless": true,
+      "http_directory": "kickstart",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_urls": [
+        "{{user `iso_url1`}}",
+        "{{user `iso_url2`}}"
+      ],
+      "shutdown_command": "echo 'vagrant' | /usr/bin/sudo -S /sbin/shutdown -h 0",
+      "ssh_password": "vagrant",
+      "ssh_username": "root",
+      "ssh_wait_timeout": "10000s",
+      "type": "virtualbox-iso",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "4096"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "4"
+        ]
+      ],
+      "virtualbox_version_file": ".vbox_version",
+      "vm_name": "{{user `image`}}"
+    },
+    {
+      "azure_tags": {
+        "product": "{{user `image`}}"
+      },
+      "client_id": "{{user `arm_client_id`}}",
+      "client_secret": "{{user `arm_client_secret`}}",
+      "image_offer": "CentOS",
+      "image_publisher": "OpenLogic",
+      "image_sku": "{{user `arm_image_sku`}}",
+      "location": "{{user `arm_location`}}",
+      "managed_image_name": "{{user `image`}}",
+      "managed_image_resource_group_name": "{{user `arm_resource_group`}}",
+      "os_type": "Linux",
+      "os_disk_size_gb": "30",
+      "subscription_id": "{{user `arm_subscription_id`}}",
+      "tenant_id": "{{user `arm_tenant_id`}}",
+      "type": "azure-arm",
+      "vm_size": "Standard_D8_v3"
+    }
+  ],
+  "post-processors": [[
+    {
+      "only": [
+        "docker"
+      ],
+      "repository": "{{user `docker_registry`}}/{{user `image`}}",
+      "tag": "{{user `git_tag`}}",
+      "type": "docker-tag"
+    },
+    {
+      "compression_level": 9,
+      "keep_input_artifact": true,
+      "only": [
+        "virtualbox-iso"
+      ],
+      "output": "packer/{{user `image`}}.box",
+      "type": "vagrant",
+      "vagrantfile_template": "Vagrantfile.template"
+    },
+    {
+      "access_token": "{{user `cloud_token`}}",
+      "box_tag": "dockpack/{{user `image`}}",
+      "only": [
+        "virtualbox-iso"
+      ],
+      "type": "vagrant-cloud",
+      "version": "{{user `version`}}"
+    }
+  ]],
+  "provisioners": [
+    {
+      "inline": [
+        "yum -y install sudo"
+      ],
+      "only": [
+        "docker"
+      ],
+      "type": "shell"
+    },
+    {
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "scripts": [
+        "scripts/vagrant.sh",
+        "scripts/vmtools.sh",
+        "scripts/ansible.sh"
+      ],
+      "type": "shell"
+    },
+    {
+      "extra_arguments": [
+        "--extra-vars \"image={{user `image`}}\""
+      ],
+      "playbook_dir": "./ansible",
+      "playbook_file": "ansible/packer.yml",
+      "type": "ansible-local"
+    },
+    {
+      "execute_command": "echo 'vagrant' | {{.Vars}} /usr/bin/sudo -S -E bash '{{.Path}}'",
+      "script": "scripts/cleanup.sh",
+      "type": "shell"
+    },
+    {
+      "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'",
+      "inline": [
+        "/usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync"
+      ],
+      "inline_shebang": "/bin/sh -x",
+      "only": [
+        "azure-arm"
+      ],
+      "type": "shell"
+    }
+  ],
+  "push": {
+    "name": "{{user `image`}}"
+  },
+  "variables": {
+    "arm_client_id": "{{env `ARM_CLIENT_ID`}}",
+    "arm_client_secret": "{{env `ARM_CLIENT_SECRET`}}",
+    "arm_image_sku": "7.7",
+    "arm_location": "{{env `ARM_LOCATION`}}",
+    "arm_resource_group": "{{env `ARM_RESOURCE_GROUP`}}images",
+    "arm_storage_account": "{{env `ARM_STORAGE_ACCOUNT`}}images",
+    "arm_subscription_id": "{{env `ARM_SUBSCRIPTION_ID`}}",
+    "arm_tenant_id": "{{env `ARM_TENANT_ID`}}",
+    "base_image": "centos:7",
+    "git_tag": "{{env `GIT_TAG`}}",
+    "iso_checksum": "sha256:9a2c47d97b9975452f7d582264e9fc16d108ed8252ac6816239a3b58cef5c53d",
+    "iso_url1": "file:///Users/Shared/CentOS-7-x86_64-Minimal-1908.iso",
+    "iso_url2": "https://buildlogs.centos.org/rolling/7/isos/x86_64/CentOS-7-x86_64-Minimal-1908.iso",
+    "image": "centos7",
+    "vagrantcloud_token": "{{ env `VAGRANT_CLOUD_TOKEN` }}",
+    "version": "7.7.{{ timestamp }}"
+  }
+}

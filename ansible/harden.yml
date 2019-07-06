@@ -1,0 +1,18 @@
+#!/usr/bin/env ansible-playbook
+---
+
+- name: Harden Centos 7
+  hosts: all
+  become: true
+
+  vars:
+    manage_password_compliance: false
+
+  roles:
+    - {role: dockpack.base_epel, tags: 'epel'}
+    - {role: dockpack.secure_ssh, tags: 'ssh'}
+    - {role: dockpack.hardened7, tags: 'harden'}
+    - {role: dockpack.ansible-auditd, tags: 'auditd'}
+    - {role: dockpack.base_nettime, tags: 'nettime'}
+    - {role: dockpack.base_rsyslog, tags: 'syslog'}
+    - {role: dockpack.base_crontab, tags: 'crontab'}
