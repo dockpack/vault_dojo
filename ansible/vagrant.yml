@@ -1,5 +1,22 @@
-- name: Provision Consul
+#!/usr/bin/env ansible-playbook
+---
+
+- name: Harden OS
   hosts: all
+  become: true
+  roles:
+    - {role: hardening, tags: hardening}
+
+- name: Harden SSH
+  hosts: bastion
+  become: true
+  vars:
+    hashicorp_vault_ssh: true
+  roles:
+    - {role: secure_ssh, tags: secure_ssh}
+
+- name: Provision Consul
+  hosts: consul_instances
   become: true
 
   vars:
@@ -44,7 +61,7 @@
         - consul
 
 - name: Provision Hashicorp Vault
-  hosts: server1
+  hosts: vault_instances
   become: true
   become_user: root
   vars:
