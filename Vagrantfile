@@ -29,6 +29,23 @@ Vagrant.configure("2") do |config|
   config.hostmanager.ignore_private_ip = false
   config.hostmanager.include_offline = true
 
+  config.vm.provider "virtualbox" do |virtualbox|
+    virtualbox.gui = false
+    virtualbox.customize ["modifyvm", :id, "--memory", 2028]
+    virtualbox.customize ["modifyvm", :id, "--vram", "64"]
+  end
+
+  config.vm.define :jumphost, autostart: true, primary: true do |jumphost_config|
+    jumphost_config.vm.box = "centos/7"
+    jumphost_config.vm.hostname = "jumphost"
+    jumphost_config.vm.network "private_network", ip: "192.168.122.5"
+    jumphost_config.vm.network "forwarded_port", id: 'ssh', guest: 22, host: 2205, auto_correct: false
+    jumphost_config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+    jumphost_config.vm.provider "virtualbox" do |vb|
+      vb.name = "jumphost"
+    end
+  end
+
   N = 3
   (1..N).each do |server_id|
     config.vm.define "server#{server_id}" do |server|

@@ -8,11 +8,10 @@
     - {role: hardening, tags: hardening}
 
 - name: Harden SSH
-  hosts: bastion
+  hosts: all
   become: true
-  vars:
-    hashicorp_vault_ssh: true
   roles:
+    - {role: install-epel, tags: secure_ssh}
     - {role: secure_ssh, tags: secure_ssh}
 
 - name: Provision Consul
