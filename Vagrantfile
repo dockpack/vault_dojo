@@ -21,7 +21,7 @@ Vagrant.configure("2") do |config|
   end
   config.vm.graceful_halt_timeout=15
 
-  config.ssh.insert_key = false
+  config.ssh.insert_key = true
   config.ssh.forward_agent = true
   config.hostmanager.enabled = true
   config.hostmanager.manage_host = false

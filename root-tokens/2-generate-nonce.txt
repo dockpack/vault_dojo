@@ -1,0 +1,2 @@
+vault operator generate-root -init -otp=$(cat otp.txt) -format=json \
+        | jq -r ".nonce" > nonce.txt
