@@ -1,0 +1,29 @@
+#!/bin/bash -e
+
+platform=linux_amd64
+
+if [ "$2" == "" ]
+then
+    echo "Usage $0 [consul|vault| etc...] version"
+    exit 2
+fi
+tool=$1
+version=$2
+
+mkdir -p "$tool/$version"
+cd "$tool/$version"
+
+keybase follow hashicorp
+curl https://keybase.io/hashicorp/pgp_keys.asc > hashicorp.asc
+keybase pgp pull hashicorp
+
+# Download the binary and signature files.
+wget -N "https://releases.hashicorp.com/$tool/$version/${tool}_${version}_${platform}.zip"
+curl -Os "https://releases.hashicorp.com/$tool/$version/${tool}_${version}_SHA256SUMS"
+curl -Os "https://releases.hashicorp.com/$tool/$version/${tool}_${version}_SHA256SUMS.sig"
+
+# Verify the signature file is untampered.
+gpg --verify "${tool}_${version}_SHA256SUMS.sig" "${tool}_${version}_SHA256SUMS"
+
+# Verify the SHASUM matches the binary.
+shasum -a 256 -c "${tool}_${version}_SHA256SUMS" 2>&1 | grep "$platform"
