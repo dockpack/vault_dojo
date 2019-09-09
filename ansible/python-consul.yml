@@ -1,0 +1,22 @@
+#!/usr/bin/env ansible-playbook
+---
+
+- name: Provision Consul
+  hosts: consul_instances
+  become: true
+
+
+  roles:
+    - role: dockpack.base_python
+      vars:
+        python_epel:
+          - python-pip
+      tags: python
+
+  post_tasks:
+    - name: install python-consul
+      pip:
+        name: python-consul
+        state: present
+      tags:
+        - consul

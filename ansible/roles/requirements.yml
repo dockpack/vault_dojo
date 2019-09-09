@@ -5,6 +5,11 @@
   scm: git
   version: master
 
+- src: https://github.com/dockpack/base_python.git
+  name: dockpack.base_python
+  scm: git
+  version: master
+
 - src: https://github.com/dockpack/secure_ssh.git
   name: dockpack.secure_ssh
   scm: git
