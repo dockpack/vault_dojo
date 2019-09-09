@@ -24,7 +24,7 @@ Vagrant.configure("2") do |config|
   config.ssh.insert_key = false
   config.ssh.forward_agent = true
   config.hostmanager.enabled = true
-  config.hostmanager.manage_host = false
+  config.hostmanager.manage_host = true
   config.hostmanager.manage_guest = true
   config.hostmanager.ignore_private_ip = false
   config.hostmanager.include_offline = true
@@ -35,23 +35,23 @@ Vagrant.configure("2") do |config|
     virtualbox.customize ["modifyvm", :id, "--vram", "64"]
   end
 
-  config.vm.define :host, autostart: true, primary: true do |host_config|
+  config.vm.define :jumphost, autostart: true, primary: true do |host_config|
     host_config.vm.box = "centos/7"
-    host_config.vm.hostname = "host"
+    host_config.vm.hostname = "jumphost"
     host_config.vm.network "private_network", ip: "192.168.122.5"
     host_config.vm.network "forwarded_port", id: 'ssh', guest: 22, host: 2205, auto_correct: false
     host_config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
     host_config.vm.provider "virtualbox" do |vb|
-      vb.name = "host"
+      vb.name = "jumphost"
     end
   end
 
   N = 3
   (1..N).each do |server_id|
-    config.vm.define "server#{server_id}" do |server|
-      server.vm.hostname = "server#{server_id}"
+    config.vm.define "server0#{server_id}.consul" do |server|
+      server.vm.hostname = "server0#{server_id}.consul"
       server.vm.provider "virtualbox" do |vb|
-        vb.name = "server#{server_id}"
+        vb.name = "server0#{server_id}.consul"
       end
       server.vm.network "private_network", ip: "192.168.122.#{10+server_id}"
       server.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
@@ -68,8 +68,8 @@ Vagrant.configure("2") do |config|
           ansible.playbook = "ansible/vagrant.yml"
           ansible.verbose = "v"
           ansible.groups = {
-            "vault_instances" => ["server1"],
-            "consul_instances" => ["server[1:3]"]
+            "vault_instances" => ["server01.consul"],
+            "consul_instances" => ["server0[1:3].consul"]
           }
         end
       end
