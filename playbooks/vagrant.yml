@@ -34,7 +34,7 @@
     consul_ports_https: 8501
 
   roles:
-    - {role: install-epel, tags: epel}
+    - {role: dockpack.base_epel, tags: epel}
     - {role: ansible-consul, tags: consul}
 
   post_tasks:
