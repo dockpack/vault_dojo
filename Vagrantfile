@@ -15,13 +15,13 @@ Vagrant.configure("2") do |config|
     exec "vagrant #{ARGV.join' '}"
   end
   config.vm.box = "centos/7"
-  config.vm.box_check_update = true
+  config.vm.box_check_update = false
   if Vagrant.has_plugin?("vagrant-vbguest")
     config.vbguest.auto_update = false
   end
   config.vm.graceful_halt_timeout=15
 
-  config.ssh.insert_key = true
+  config.ssh.insert_key = false
   config.ssh.forward_agent = true
   config.hostmanager.enabled = true
   config.hostmanager.manage_host = false
@@ -35,14 +35,14 @@ Vagrant.configure("2") do |config|
     virtualbox.customize ["modifyvm", :id, "--vram", "64"]
   end
 
-  config.vm.define :jumphost, autostart: true, primary: true do |jumphost_config|
-    jumphost_config.vm.box = "centos/7"
-    jumphost_config.vm.hostname = "jumphost"
-    jumphost_config.vm.network "private_network", ip: "192.168.122.5"
-    jumphost_config.vm.network "forwarded_port", id: 'ssh', guest: 22, host: 2205, auto_correct: false
-    jumphost_config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
-    jumphost_config.vm.provider "virtualbox" do |vb|
-      vb.name = "jumphost"
+  config.vm.define :host, autostart: true, primary: true do |host_config|
+    host_config.vm.box = "centos/7"
+    host_config.vm.hostname = "host"
+    host_config.vm.network "private_network", ip: "192.168.122.5"
+    host_config.vm.network "forwarded_port", id: 'ssh', guest: 22, host: 2205, auto_correct: false
+    host_config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+    host_config.vm.provider "virtualbox" do |vb|
+      vb.name = "host"
     end
   end
 
@@ -63,10 +63,10 @@ Vagrant.configure("2") do |config|
           # Disable default limit to connect to all the servers
           ansible.limit = "all"
           ansible_inventory = "inventories/vagrant.ini"
-          ansible.galaxy_role_file = "ansible/requirements.yml"
-          ansible.galaxy_roles_path = "ansible/roles"
-          ansible.playbook = "ansible/vagrant.yml"
-          ansible.verbose = "vv"
+          ansible.galaxy_role_file = "roles/requirements.yml"
+          ansible.galaxy_roles_path = "roles"
+          ansible.playbook = "playbooks/vagrant.yml"
+          ansible.verbose = "v"
           ansible.groups = {
             "vault_instances" => ["server1"],
             "consul_instances" => ["server[1:3]"]

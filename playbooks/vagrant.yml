@@ -1,19 +1,6 @@
 #!/usr/bin/env ansible-playbook
 ---
 
-- name: Harden OS
-  hosts: all
-  become: true
-  roles:
-    - {role: hardening, tags: hardening}
-
-- name: Harden SSH
-  hosts: all
-  become: true
-  roles:
-    - {role: install-epel, tags: secure_ssh}
-    - {role: secure_ssh, tags: secure_ssh}
-
 - name: Provision Consul
   hosts: consul_instances
   become: true
@@ -47,8 +34,7 @@
     consul_ports_https: 8501
 
   roles:
-    - {role: install-epel, tags: consul}
-    - {role: install-pip, tags: consul}
+    - {role: install-epel, tags: epel}
     - {role: ansible-consul, tags: consul}
 
   post_tasks:

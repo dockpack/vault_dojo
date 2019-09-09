@@ -1,14 +1,14 @@
+---
+
 - src: https://github.com/dockpack/base_epel.git
-  name: install-epel
-
-- src: https://github.com/dockpack/base_python.git
-  name: install-pip
-
-- src: https://github.com/dockpack/hardened7.git
-  name: hardening
+  name: dockpack.base_epel
+  scm: git
+  version: master
 
 - src: https://github.com/dockpack/secure_ssh.git
-  name: secure_ssh
+  name: dockpack.secure_ssh
+  scm: git
+  version: master
 
 - src: https://github.com/brianshumate/ansible-consul.git
   name: ansible-consul
