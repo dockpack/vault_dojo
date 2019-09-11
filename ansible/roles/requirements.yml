@@ -18,9 +18,9 @@
 - src: https://github.com/brianshumate/ansible-consul.git
   name: ansible-consul
   scm: git
-  version: v2.3.6
+  version: master
 
 - src: https://github.com/brianshumate/ansible-vault.git
   name: ansible-vault
   scm: git
-  version: v2.2.1
+  version: master
