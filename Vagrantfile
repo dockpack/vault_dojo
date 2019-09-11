@@ -35,7 +35,7 @@ Vagrant.configure("2") do |config|
     virtualbox.customize ["modifyvm", :id, "--vram", "64"]
   end
 
-  config.vm.define :jumphost, autostart: true, primary: true do |host_config|
+  config.vm.define :jumphost, autostart: false, primary: true do |host_config|
     host_config.vm.box = "centos/7"
     host_config.vm.hostname = "jumphost"
     host_config.vm.network "private_network", ip: "192.168.122.5"
