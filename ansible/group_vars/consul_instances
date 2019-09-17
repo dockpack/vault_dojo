@@ -15,7 +15,7 @@ consul_dnsmasq_servers:
   - 8.8.8.8
 # TLS
 consul_tls_enable: true
-consul_tls_src_files: files
+consul_tls_src_files: files/tls
 # Constants:
 consul_client_address: "0.0.0.0"
 consul_acl_master_token_display: true
