@@ -8,3 +8,4 @@ provision:
 
 mac_apps:
 	brew bundle
+	pip3 install -r requirements.txt
