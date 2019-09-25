@@ -1,7 +1,7 @@
 #!/usr/bin/env ansible-playbook
 ---
 
-- name: Provision Consul
+- name: Provision Secure Shell with CA Signed Keys
   hosts: jumphost
   become: true
 
