@@ -11,7 +11,9 @@
       vars:
         consul_acl_enable: true
         consul_acl_default_policy: 'deny'
+        consul_acl_master_token_display: true
       tags: consul
+    - role: consul-policies
 
 - name: Provision Hashicorp Vault
   hosts: vault_instances
@@ -19,12 +21,14 @@
   become_user: root
   vars:
     consul_config_path: "/etc/consul"
+    consul_debug: true
   pre_tasks:
     - name: Read ACL master token from first Consul server
       delegate_to: "{{ groups.consul_instances[0] }}"
       command: "cat {{ consul_config_path }}/config.json"
       register: config_read
-      no_log: trues
+      no_log: true
+      changed_when: false
       run_once: true
 
     - name: Save ACL master token from Consul configuration

@@ -1,4 +1,3 @@
 
-consul_tls_ca_crt: consul-agent-ca.pem
 consul_tls_server_crt: dc1-server-consul-2.pem
 consul_server_key: dc1-server-consul-2-key.pem

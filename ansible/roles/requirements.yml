@@ -15,12 +15,17 @@
   scm: git
   version: master
 
-- src: https://github.com/brianshumate/ansible-consul.git
+- src: git@github.com:dockpack/ansible-consul.git
   name: ansible-consul
   scm: git
-  version: master
+  version: develop
 
-- src: https://github.com/brianshumate/ansible-vault.git
+- src: git@github.com:dockpack/ansible-vault.git
   name: ansible-vault
+  scm: git
+  version: develop
+
+- src: git@github.com:dockpack/consul-policies.git
+  name: consul-policies
   scm: git
   version: master

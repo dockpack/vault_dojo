@@ -62,14 +62,15 @@ Vagrant.configure("2") do |config|
           ansible.compatibility_mode = "2.0"
           # Disable default limit to connect to all the servers
           ansible.limit = "all"
-          ansible.inventory_path = "ansible/inventories/vagrant.ini"
           ansible.galaxy_role_file = "ansible/roles/requirements.yml"
           ansible.galaxy_roles_path = "ansible/roles"
-          ansible.playbook = "ansible/vagrant.yml"
+          ansible.inventory_path = "ansible/inventories/vagrant.ini"
+          ansible.playbook = "ansible/cluster_setup.yml"
           ansible.verbose = "v"
           ansible.groups = {
             "vault_instances" => ["server01.consul"],
-            "consul_instances" => ["server0[1:3].consul"]
+            "consul_instances" => ["server0[1:3].consul"],
+            "consul_servers" => ["server0[1:3].consul"]
           }
         end
       end
