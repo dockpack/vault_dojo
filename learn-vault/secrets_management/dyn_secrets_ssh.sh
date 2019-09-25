@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 # Enable ssh secrets engine
 vault secrets list|grep ssh || vault secrets enable -path=ssh-client-signer ssh
@@ -6,7 +6,7 @@ vault secrets list|grep ssh || vault secrets enable -path=ssh-client-signer ssh
 # Configure Vault with a CA for signing client keys using the /config/ca endpoint.
 vault write ssh-client-signer/config/ca generate_signing_key=true
 
-vault read -field=public_key ssh-client-signer/config/ca > ../ansible/files/trusted-user-ca-keys.pem
+vault read -field=public_key ssh-client-signer/config/ca > ../../ansible/files/trusted-user-ca-keys.pem
 
 vault write ssh-client-signer/roles/admin-role -<<"EOH"
 {
@@ -28,7 +28,7 @@ EOH
 vault write -field=signed_key ssh-client-signer/sign/admin-role \
     public_key=@$HOME/.ssh/id_rsa.pub > $HOME/.ssh/id_rsa-cert.pub
 
-chmod 600 $HOME/.ssh/id_rsa-cert.pu
+chmod 600 $HOME/.ssh/id_rsa-cert.pub
 
 # View enabled extensions, principals, and metadata of the signed key.
 ssh-keygen -Lf ~/.ssh/id_rsa-cert.pub
