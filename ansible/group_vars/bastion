@@ -13,7 +13,7 @@ ssh_users:
     shell: /bin/bash
     group: wheel
     seuser: unconfined_u
-  - username: bas
+  - username: admin
     shell: /bin/bash
     group: wheel
     seuser: staff_u
