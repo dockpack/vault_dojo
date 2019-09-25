@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 # Enable the AWS Secrets Engine
 vault secrets list|grep aws || vault secrets enable -path=aws aws

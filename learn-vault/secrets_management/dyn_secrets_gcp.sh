@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 vault secrets list|grep gcp || vault secrets enable gcp
 
