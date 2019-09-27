@@ -1,0 +1,12 @@
+---
+
+- name: edit profile file
+  copy:
+    dest: /etc/profile.d/vault.sh
+    content: |
+      export VAULT_ADDR=https://{{ groups.vault_instances[0] }}:8200
+      export VAULT_CACERT={{ vault_tls_config_path }}/{{ vault_tls_ca_file }}
+    owner: vault
+    group: root
+    mode: 0644
+...
