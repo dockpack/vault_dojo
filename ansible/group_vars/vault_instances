@@ -4,6 +4,7 @@ vault_version: 1.2.2
 vault_iface: eth1
 vault_datacenter: "dc1"
 vault_domain: "consul"
+vault_bin_path: /usr/bin
 # TLS
 vault_tls_disable: 0
 vault_tls_src_files: files/tls
