@@ -41,3 +41,4 @@
   roles:
     - role: ansible-vault
       tags: 'vault'
+    - role: vault-admin
