@@ -44,7 +44,7 @@
   delegate_to: "{{ groups.vault_instances[0] }}"
   run_once: true
   when: "'{{ check_result.status }}' == '501'"
-  no_log: false
+  no_log: true
   environment:
     VAULT_ADDR: "https://{{ groups.vault_instances[0] }}:{{ vault_port }}"
     VAULT_CACERT: "{{ vault_tls_config_path }}/{{ vault_tls_ca_file }}"
@@ -105,7 +105,7 @@
     - seal
 
 - name: load encrypted Vault credentials
-  no_log: false
+  no_log: true
   include_vars:  ~/.vault.json
   tags:
     - unseal
@@ -127,7 +127,7 @@
 - name: 'seal Hashicorp Vault with tags=seal -e seal=true'
   delegate_to: "{{ groups.vault_instances[0] }}"
   run_once: true
-  no_log: false
+  no_log: true
   when: seal is defined
   environment:
     VAULT_ADDR: "https://{{ groups.vault_instances[0] }}:{{ vault_port }}"
