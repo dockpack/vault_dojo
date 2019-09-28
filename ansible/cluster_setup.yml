@@ -60,5 +60,18 @@
   roles:
     - role: ansible-vault
       tags: 'vault'
-    - role: vault-admin
 
+- name: Provision Hashicorp Vault
+  hosts: all
+  become: true
+  become_user: root
+  roles:
+    - role: vault-admin
+      environment:
+        VAULT_TOKEN: "{{ lookup('env','VAULT_TOKEN') }}"
+      tags: 'vault_admin'
+
+    - role: vault-policies
+      environment:
+        VAULT_TOKEN: "{{ lookup('env','VAULT_TOKEN') }}"
+      tags: 'vault_policies'

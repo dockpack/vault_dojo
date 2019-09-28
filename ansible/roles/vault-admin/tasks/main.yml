@@ -1,6 +1,5 @@
 ---
 
-
 - name: Insert http(s) export in dotfile
   lineinfile:
     path: '/etc/profile.d/vault.sh'

@@ -1,0 +1,36 @@
+---
+
+- name: create directory for policies
+  run_once: true
+  delegate_to: "{{ groups.vault_instances[0] }}"
+  file:
+    path: "/home/{{ vault_user }}/policies"
+    state: directory
+    owner: "{{ vault_user }}"
+    group: "{{ vault_group }}"
+    mode: 0700
+
+- name: copy policies
+  run_once: true
+  delegate_to: "{{ groups.vault_instances[0] }}"
+  copy:
+    src: "{{ item }}"
+    dest: "/home/{{ vault_user }}/policies/"
+    owner: "{{ vault_user }}"
+    group: "{{ vault_group }}"
+    mode: 0600
+  with_fileglob: "policies/*"
+
+- name: register policies
+  run_once: true
+  delegate_to: "{{ groups.vault_instances[0] }}"
+  environment:
+    VAULT_ADDR: "https://{{ groups.vault_instances[0] }}:8200"
+    VAULT_TOKEN: "{{ lookup('env','VAULT_TOKEN') }}"
+    VAULT_CACERT: "{{ vault_tls_config_path }}/{{ vault_tls_ca_file }}"
+  command: >
+       {{ vault_bin_path }}/vault policy write \
+       {{ item | basename }} {{ item }}.hcl
+  args:
+    chdir: "/home/{{ vault_user }}/policies/"
+  with_items: "{{ vault_policies }}"
