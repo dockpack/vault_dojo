@@ -15,17 +15,22 @@
   scm: git
   version: master
 
-- src: git@github.com:dockpack/ansible-consul.git
+- src: https://github.com/dockpack/ansible-consul.git
   name: ansible-consul
   scm: git
   version: develop
 
-- src: git@github.com:dockpack/ansible-vault.git
+- src: https://github.com/dockpack/ansible-vault.git
   name: ansible-vault
   scm: git
   version: develop
 
-- src: git@github.com:dockpack/consul-policies.git
+- src: https://github.com/dockpack/consul-policies.git
   name: consul-policies
+  scm: git
+  version: master
+
+- src: https://github.com/bbaassssiiee/painless-password-rotation.git
+  name: painless-password-rotation
   scm: git
   version: master
