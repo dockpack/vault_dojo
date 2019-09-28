@@ -1,6 +1,6 @@
 ---
 # VARIABLES TO EDIT
-vault_version: 1.0.2
+vault_version: 1.1.2
 vault_iface: eth1
 vault_datacenter: "dc1"
 vault_domain: "consul"
@@ -15,3 +15,4 @@ validate_certs_during_api_reachable_check: false
 # CONSTANTS
 vault_ui: true
 vault_cluster_disable: true
+vault_enable_logrotate: true
