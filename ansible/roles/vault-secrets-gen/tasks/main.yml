@@ -1,0 +1,63 @@
+---
+- name: Download Plugin
+  unarchive:
+    src: "{{ vsgp_url }}"
+    remote_src: true
+    dest: "{{ vault_plugin_path }}"
+    owner: "{{ vault_user }}"
+    group: "{{ vault_group }}"
+    mode: 0750
+
+- name: Enable mlock Capability
+  capabilities:
+    path: "{{ vault_plugin_path }}/vault-secrets-gen"
+    capability: 'cap_ipc_lock=+ep'
+    state: present
+
+- name: Calculate sha256
+  stat:
+    path: "{{ vault_plugin_path }}/vault-secrets-gen"
+    get_checksum: true
+    checksum_algorithm: sha256
+  register: pluginfile
+
+- name: Display checksum
+  debug:
+    msg: "{{ pluginfile.stat.checksum }}"
+
+- name: Register plugin
+  run_once: true
+  environment:
+    VAULT_ADDR: "https://{{ groups.vault_instances[0] }}:8200"
+    VAULT_TOKEN: "{{ lookup('env','VAULT_TOKEN') }}"
+    VAULT_CACERT: "{{ vault_tls_config_path }}/{{ vault_tls_ca_file }}"
+  command: >
+    {{ vault_bin_path }}/vault write sys/plugins/catalog/secrets-gen \
+    sha_256="{{ pluginfile.stat.checksum }}" \
+    command="vault-secrets-gen"
+
+- name: Try the secrets engine
+  uri:
+    method: POST
+    headers:
+      X-Vault-token: "{{ lookup('env','VAULT_TOKEN') }}"
+    url: "https://{{ groups.vault_instances[0] }}:8200/gen/password?length=16&symbols=0"
+    content: 'True'
+    status_code: 200,404
+    validate_certs: false
+  register: genpw
+
+- name: Mount the secrets engine
+  run_once: true
+  when: genpw.status|int == 404
+  environment:
+    VAULT_ADDR: "https://{{ groups.vault_instances[0] }}:8200"
+    VAULT_TOKEN: "{{ lookup('env','VAULT_TOKEN') }}"
+    VAULT_CACERT: "{{ vault_tls_config_path }}/{{ vault_tls_ca_file }}"
+  command: >
+    {{ vault_bin_path }}/vault secrets enable \
+    -path=gen \
+    -plugin-name=secrets-gen \
+    plugin
+  ignore_errors: true
+...

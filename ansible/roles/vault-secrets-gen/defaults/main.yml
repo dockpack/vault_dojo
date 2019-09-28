@@ -1,0 +1,22 @@
+---
+vault_plugin_path: /usr/local/lib/vault/plugins
+vault_user: vault
+vault_group: bin
+
+vault_tls_ca_file: ca.crt
+vault_tls_config_path: "{{ lookup('env','VAULT_TLS_DIR') | default('/etc/vault/tls', true) }}"
+# https://github.com/sethvargo/vault-secrets-gen/releases/download/v0.0.4/vault-secrets-gen__linux_amd64.tgz
+vsgp: vault-secrets-gen
+vsgp_site: 'https://github.com/'
+vsgp_owner: sethvargo
+vsgp_path: '/vault-secrets-gen/releases/download/'
+vsgp_ver: '0.0.2'
+vsgp_os: "{{ ansible_system.lower() }}"
+vsgp_chip: amd64
+vsgp_fmt: tgz
+
+vsgp_prefix: "{{ vsgp_site }}{{ vsgp_owner }}{{ vsgp_path }}v{{ vsgp_ver }}"
+vsgp_file: "{{ vsgp }}_{{ vsgp_ver }}_{{ vsgp_os }}_{{ vsgp_chip }}.{{ vsgp_fmt }}"
+vsgp_url: "{{ vsgp_prefix }}/{{ vsgp_file }}"
+
+...
