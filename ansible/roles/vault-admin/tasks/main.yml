@@ -60,7 +60,7 @@
   when: "'{{ check_result.status }}' == '501'"
   copy:
     dest: ~/.vault.json
-    content: "{{ inited.stdout|from_json }}"
+    content: "{{ inited.stdout|from_json|to_nice_json }}"
     mode: 0600
   register: save_json
   tags:
