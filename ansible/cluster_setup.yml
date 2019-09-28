@@ -15,6 +15,25 @@
       tags: consul
     - role: consul-policies
 
+- name: Enable Consul hosts with python API
+  hosts: consul_instances
+  become: true
+
+  roles:
+    - role: dockpack.base_python
+      vars:
+        python_epel:
+          - python-pip
+      tags: python
+
+  post_tasks:
+    - name: install python-consul
+      pip:
+        name: python-consul
+        state: present
+      tags:
+        - consul
+
 - name: Provision Hashicorp Vault
   hosts: vault_instances
   become: true
