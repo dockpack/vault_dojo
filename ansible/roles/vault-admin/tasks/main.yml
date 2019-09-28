@@ -27,6 +27,7 @@
     - check_vault
     - init
     - unseal
+    - seal
 
 - name: Vault status
   debug:
@@ -37,21 +38,22 @@
     - check_vault
     - init
     - unseal
+    - seal
 
-- name: vault operator init
+- name: initialize Hashicorp Vault
   delegate_to: "{{ groups.vault_instances[0] }}"
   run_once: true
   when: "'{{ check_result.status }}' == '501'"
   no_log: false
   environment:
-    VAULT_ADDR: "https://{{ groups.vault_instances[0] }}:8200"
+    VAULT_ADDR: "https://{{ groups.vault_instances[0] }}:{{ vault_port }}"
     VAULT_CACERT: "{{ vault_tls_config_path }}/{{ vault_tls_ca_file }}"
   command: vault operator init -format=json
   register: inited
   tags:
     - init
 
-- name: save vault credentials
+- name: save Vault credentials as pretty JSON
   delegate_to: localhost
   become: false
   no_log: true
@@ -64,7 +66,7 @@
   tags:
     - init
 
-- name: save vault credentials
+- name: encrypt pretty JSON with ansible-vault
   delegate_to: localhost
   become: false
   no_log: true
@@ -75,58 +77,60 @@
   tags:
     - init
 
-- name: vault operator root token
-  delegate_to: "{{ groups.vault_instances[0] }}"
-  run_once: true
+- name: Vault API reachable?
+  # Attempt to help with long lines > 160 issues
+  vars:
+    vault_addr_protocol: "{{ vault_tls_disable | ternary('http', 'https') }}"
+    vault_addr: "{{ (vault_address == '0.0.0.0') | ternary('127.0.0.1', vault_address) }}"
+  uri:
+    validate_certs: "{{ validate_certs_during_api_reachable_check | bool }}"
+    url: "{{ vault_addr_protocol }}://{{ vault_addr }}:{{ vault_port }}/v1/sys/health"
+    method: GET
+    # 200 if initialized, unsealed, and active
+    # 429 if unsealed and standby
+    # 472 if data recovery mode replication secondary and active
+    # 473 if performance standby
+    # 501 if not initialized
+    # 503 if sealed
+    # See: https://www.vaultproject.io/api/system/health.html
+    status_code: 200, 503, 200, 429, 473, 501, 503
+    body_format: json
+  register: check_result
+  retries: 6
+  until: check_result is succeeded
+  delay: 10
+  changed_when: false
+  tags:
+    - unseal
+    - seal
+
+- name: load encrypted Vault credentials
   no_log: false
-  when: "'{{ check_result.status }}' == '501'"
-  set_fact:
-    vault_root_token: "{{ inited.stdout|from_json|json_query(query) }}"
-  vars:
-    query: '.root_token'
-  tags:
-    - init
-
-- name: set vault unseal keys
-  delegate_to: "{{ groups.vault_instances[0] }}"
-  run_once: true
-  no_log: true
-  when: "'{{ check_result.status }}' == '501'"
-  set_fact:
-    unseal_keys_hex[{{ item }}]: "{{ init.stdout|from_json|json_query(query) }}"
-  vars:
-    query: '.unseal_keys_hex[{{ item }}]'
-  loop: "{{ [0, 1, 2] }}"
-  tags:
-    - init
-
-- name: set vault unseal keys
-  no_log: true
-  when: "'{{ check_result.status }}' == '503'"
   include_vars:  ~/.vault.json
   tags:
     - unseal
+    - seal
 
-- name: vault operator unseal
+- name: 'unseal Hashicorp Vault with tags=unseal'
   delegate_to: "{{ groups.vault_instances[0] }}"
   run_once: true
   no_log: true
   when: "'{{ check_result.status }}' == '503'"
   environment:
-    VAULT_ADDR: "https://{{ groups.vault_instances[0] }}:8200"
+    VAULT_ADDR: "https://{{ groups.vault_instances[0] }}:{{ vault_port }}"
     VAULT_CACERT: "{{ vault_tls_config_path }}/{{ vault_tls_ca_file }}"
   command: "vault operator unseal {{ item }}"
   with_items: "{{ unseal_keys_hex }}"
   tags:
     - unseal
 
-- name: vault operator seal
+- name: 'seal Hashicorp Vault with tags=seal -e seal=true'
   delegate_to: "{{ groups.vault_instances[0] }}"
   run_once: true
-  no_log: true
+  no_log: false
   when: seal is defined
   environment:
-    VAULT_ADDR: "https://{{ groups.vault_instances[0] }}:8200"
+    VAULT_ADDR: "https://{{ groups.vault_instances[0] }}:{{ vault_port }}"
     VAULT_CACERT: "{{ vault_tls_config_path }}/{{ vault_tls_ca_file }}"
     VAULT_TOKEN: "{{ root_token }}"
   command: "vault operator seal"
