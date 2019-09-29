@@ -21,12 +21,16 @@
     mode: 0600
   with_fileglob: "policies/*"
 
+- name: load encrypted Vault credentials
+  no_log: true
+  include_vars: "{{ vault_credentials }}"
+
 - name: register policies
   run_once: true
   delegate_to: "{{ groups.vault_instances[0] }}"
   environment:
     VAULT_ADDR: "https://{{ groups.vault_instances[0] }}:8200"
-    VAULT_TOKEN: "{{ lookup('env','VAULT_TOKEN') }}"
+    VAULT_TOKEN: "{{ root_token }}"
     VAULT_CACERT: "{{ vault_tls_config_path }}/{{ vault_tls_ca_file }}"
   command: >
        {{ vault_bin_path }}/vault policy write \
