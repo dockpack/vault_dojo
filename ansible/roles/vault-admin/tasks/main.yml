@@ -81,7 +81,7 @@
   no_log: true
   when: "'{{ check_result.status }}' == '501'"
   copy:
-    dest: ~/.vault.json
+    dest: "{{ vault_credentials }}"
     content: "{{ inited.stdout|from_json|to_nice_json }}"
     mode: 0600
   register: save_json
@@ -95,7 +95,7 @@
   when: "'{{ check_result.status }}' == '501'"
   environment:
     ANSIBLE_VAULT_PASSWORD_FILE: "{{ lookup('env','ANSIBLE_VAULT_PASSWORD_FILE') }}"
-  command: ansible-vault encrypt ~/.vault.json
+  command: "ansible-vault encrypt {{ vault_credentials }}"
   tags:
     - init
 
@@ -128,7 +128,7 @@
 
 - name: load encrypted Vault credentials
   no_log: true
-  include_vars:  ~/.vault.json
+  include_vars: "{{ vault_credentials }}"
   tags:
     - unseal
     - seal
