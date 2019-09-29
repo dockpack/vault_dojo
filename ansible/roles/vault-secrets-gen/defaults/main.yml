@@ -10,13 +10,13 @@ vsgp: vault-secrets-gen
 vsgp_site: 'https://github.com/'
 vsgp_owner: sethvargo
 vsgp_path: '/vault-secrets-gen/releases/download/'
-vsgp_ver: '0.0.2'
+vsgp_ver: '0.0.4'
 vsgp_os: "{{ ansible_system.lower() }}"
 vsgp_chip: amd64
 vsgp_fmt: tgz
 
 vsgp_prefix: "{{ vsgp_site }}{{ vsgp_owner }}{{ vsgp_path }}v{{ vsgp_ver }}"
-vsgp_file: "{{ vsgp }}_{{ vsgp_ver }}_{{ vsgp_os }}_{{ vsgp_chip }}.{{ vsgp_fmt }}"
+vsgp_file: "{{ vsgp }}__{{ vsgp_os }}_{{ vsgp_chip }}.{{ vsgp_fmt }}"
 vsgp_url: "{{ vsgp_prefix }}/{{ vsgp_file }}"
 
 ...
