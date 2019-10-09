@@ -14,6 +14,7 @@
         consul_acl_master_token_display: true
       tags: consul
     - role: consul-policies
+      tags: consul_policies
 
 - name: Enable Consul hosts with python API
   hosts: consul_instances
