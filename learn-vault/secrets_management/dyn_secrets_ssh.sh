@@ -6,7 +6,7 @@ vault secrets list|grep ssh || vault secrets enable -path=ssh-client-signer ssh
 # Configure Vault with a CA for signing client keys using the /config/ca endpoint.
 vault write ssh-client-signer/config/ca generate_signing_key=true
 
-vault read -field=public_key ssh-client-signer/config/ca > ../../ansible/files/trusted-user-ca-keys.pem
+vault read -field=public_key ssh-client-signer/config/ca > ../../ansible/files/trusted-user-ca-keys.pub
 
 vault write ssh-client-signer/roles/admin-role -<<"EOH"
 {
