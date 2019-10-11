@@ -53,7 +53,7 @@ Vagrant.configure("2") do |config|
       server.vm.provider "virtualbox" do |vb|
         vb.name = "server0#{server_id}.consul"
       end
-      server.vm.network "private_network", ip: "192.168.122.#{10+server_id}"
+      server.vm.network "private_network", ip: "192.168.122.10#{server_id}"
       server.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
       # Only execute once the Ansible provisioner,
       # when all the servers are up and ready.
@@ -62,7 +62,7 @@ Vagrant.configure("2") do |config|
           ansible.compatibility_mode = "2.0"
           # Disable default limit to connect to all the servers
           ansible.limit = "all"
-          ansible.galaxy_role_file = "ansible/roles/requirements.yml"
+          #ansible.galaxy_role_file = "ansible/roles/requirements.yml"
           ansible.galaxy_roles_path = "ansible/roles"
           ansible.inventory_path = "ansible/inventories/vagrant.ini"
           ansible.playbook = "ansible/cluster_setup.yml"
