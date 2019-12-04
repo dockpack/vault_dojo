@@ -1,4 +1,5 @@
 ansible
+netaddr
 python-consul
 hvac
 cryptography
