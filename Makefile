@@ -9,3 +9,7 @@ provision:
 mac_apps:
 	brew bundle
 	pip3 install -r requirements.txt
+
+clean:
+	vagrant destroy -f
+	rm -rf .vagrant
