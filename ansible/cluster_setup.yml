@@ -29,11 +29,9 @@
 
   post_tasks:
     - name: install python-consul
-      pip:
-        name: python-consul
-        state: present
+      command: /opt/rh/rh-python36/root/usr/bin/pip3 install python-consul
       tags:
-        - consul
+        - python
 
 - name: Provision Hashicorp Vault
   hosts: vault_instances
