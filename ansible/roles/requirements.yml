@@ -13,7 +13,17 @@
 - src: https://github.com/dockpack/secure_ssh.git
   name: dockpack.secure_ssh
   scm: git
-  version: master
+  version: v1.0.5
+
+- src: https://github.com/dockpack/hardened7.git
+  name: dockpack.hardened7
+  scm: git
+  version: 1.0.0
+
+- src: https://github.com/dockpack/ansible-auditd.git
+  name: dockpack.ansible-auditd
+  scm: git
+  version: 1.0.0
 
 - src: https://github.com/dockpack/ansible-consul.git
   name: ansible-consul

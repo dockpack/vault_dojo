@@ -8,3 +8,5 @@
   roles:
     - {role: dockpack.base_epel, tags: epel}
     - {role: dockpack.secure_ssh, tags: ssh}
+    - {role: dockpack.hardened7, tags: harden}
+    - {role: dockpack.ansible-auditd, tags: auditd}
