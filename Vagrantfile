@@ -38,8 +38,8 @@ Vagrant.configure("2") do |config|
   config.vm.define :jumphost, autostart: true, primary: true do |host_config|
     host_config.vm.box = "centos/7"
     host_config.vm.hostname = "jumphost"
-    host_config.vm.network "private_network", ip: "192.168.122.5"
-    host_config.vm.network "forwarded_port", id: 'ssh', guest: 22, host: 2205, auto_correct: false
+    host_config.vm.network "private_network", ip: "192.168.122.7"
+    host_config.vm.network "forwarded_port", id: 'ssh', guest: 22, host: 2207, auto_correct: false
     host_config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
     host_config.vm.provider "virtualbox" do |vb|
       vb.name = "jumphost"
