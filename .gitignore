@@ -1,2 +1,7 @@
+Brewfile.lock.json
 .vagrant
+output-virtualbox-iso
+packer/
+packer_cache/
+*.html
 roles/

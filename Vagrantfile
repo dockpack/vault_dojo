@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
   if plugin_installed === true
     exec "vagrant #{ARGV.join' '}"
   end
-  config.vm.box = "centos/7"
+  config.vm.box = "dockpack/centos7"
   config.vm.box_check_update = false
   if Vagrant.has_plugin?("vagrant-vbguest")
     config.vbguest.auto_update = false
@@ -36,11 +36,11 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define :jumphost, autostart: true, primary: true do |host_config|
-    host_config.vm.box = "centos/7"
+    host_config.vm.box = "dockpack/centos7"
     host_config.vm.hostname = "jumphost"
     host_config.vm.network "private_network", ip: "192.168.122.5"
     host_config.vm.network "forwarded_port", id: 'ssh', guest: 22, host: 2205, auto_correct: false
-    host_config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+    host_config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: false
     host_config.vm.provider "virtualbox" do |vb|
       vb.name = "jumphost"
     end
@@ -65,7 +65,7 @@ Vagrant.configure("2") do |config|
           ansible.galaxy_role_file = "ansible/roles/requirements.yml"
           ansible.galaxy_roles_path = "ansible/roles"
           ansible.inventory_path = "ansible/inventories/vagrant.ini"
-          ansible.playbook = "ansible/cluster_setup.yml"
+          ansible.playbook = "ansible/vagrant.yml"
           ansible.verbose = "v"
           ansible.groups = {
             "vault_instances" => ["server01.consul"],

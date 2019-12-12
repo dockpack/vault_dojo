@@ -1,0 +1,22 @@
+#!/usr/bin/env ansible-playbook
+---
+# This playbook is run from packer during kickstart (phase 1)
+- hosts: 127.0.0.1
+  gather_facts: true
+  become: true
+  vars:
+    manage_kernel: true
+    X11Forwarding: 'yes'
+    secure_ssh_fail2ban: true
+    secure_ssh_optional: true
+    chroot_sftp_group: true
+    chroot_sftp_users: true
+    manage_ssh_groups: true
+    manage_password_compliance: true
+  roles:
+    - {role: dockpack.secure_ssh, tags: 'ssh'}
+    - {role: dockpack.hardened7, tags: 'harden'}
+    - {role: dockpack.ansible-auditd, tags: 'auditd'}
+    - {role: dockpack.base_nettime, tags: 'nettime'}
+    - {role: dockpack.base_rsyslog, tags: 'syslog'}
+    - {role: dockpack.base_crontab, tags: 'crontab'}
