@@ -1,7 +1,7 @@
 ---
 # VARIABLES TO EDIT
 vault_version: 1.2.2
-vault_iface: eth1
+vault_iface: enp0s8
 vault_datacenter: "dc1"
 vault_domain: "consul"
 
