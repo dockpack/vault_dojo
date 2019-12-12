@@ -48,6 +48,7 @@
       no_log: true
       changed_when: false
       run_once: true
+      tags: 'vault'
 
     - name: Save ACL master token from Consul configuration
       set_fact:
@@ -55,6 +56,7 @@
       vars:
         query: "acl.tokens.master"
       no_log:  true
+      tags: 'vault'
 
   roles:
     - role: ansible-vault
