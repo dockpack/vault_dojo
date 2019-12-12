@@ -1,5 +1,16 @@
 ---
 
+- name: Enable access in firewalld
+  firewalld:
+    port: '{{ item }}/tcp'
+    permanent: true
+    state: enabled
+    immediate: true
+  with_items:
+    - 8200
+  tags:
+    - firewalld
+
 - name: Insert http(s) export in dotfile
   lineinfile:
     path: '/etc/profile.d/vault.sh'
