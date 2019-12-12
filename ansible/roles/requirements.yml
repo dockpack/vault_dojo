@@ -1,5 +1,10 @@
 ---
 
+- src: https://github.com/dockpack/ansible-auditd.git
+  name: dockpack.ansible-auditd
+  scm: git
+  version: master
+
 - src: https://github.com/dockpack/base_epel.git
   name: dockpack.base_epel
   scm: git
@@ -10,20 +15,35 @@
   scm: git
   version: master
 
+- src: https://github.com/dockpack/base_crontab.git
+  name: dockpack.base_crontab
+  scm: git
+  version: master
+
+- src: https://github.com/dockpack/base_nettime.git
+  name: dockpack.base_nettime
+  scm: git
+  version: master
+
+- src: https://github.com/dockpack/base_rsyslog.git
+  name: dockpack.base_rsyslog
+  scm: git
+  version: master
+
 - src: https://github.com/dockpack/secure_ssh.git
   name: dockpack.secure_ssh
   scm: git
-  version: v1.0.5
+  version: master
 
 - src: https://github.com/dockpack/hardened7.git
   name: dockpack.hardened7
   scm: git
-  version: 1.0.0
+  version: master
 
 - src: https://github.com/dockpack/ansible-auditd.git
   name: dockpack.ansible-auditd
   scm: git
-  version: 1.0.0
+  version: master
 
 - src: https://github.com/dockpack/ansible-consul.git
   name: ansible-consul
@@ -44,3 +64,5 @@
   name: painless-password-rotation
   scm: git
   version: master
+
+...

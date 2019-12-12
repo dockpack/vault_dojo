@@ -1,0 +1,71 @@
+#!/usr/bin/env ansible-playbook
+---
+
+- name: Provision Consul
+  hosts: consul_instances
+  become: true
+
+  roles:
+    - role: dockpack.base_epel
+    - role: ansible-consul
+      vars:
+        consul_acl_enable: true
+        consul_acl_default_policy: 'deny'
+        consul_acl_master_token_display: true
+      tags: consul
+    - role: consul-policies
+      tags: consul_policies
+
+- name: Enable Consul hosts with python API
+  hosts: consul_instances
+  become: true
+
+  roles:
+    - role: dockpack.base_python
+      vars:
+        python_epel:
+          - python-pip
+      tags: python
+
+  post_tasks:
+    - name: install python-consul
+      command: /opt/rh/rh-python36/root/usr/bin/pip3 install python-consul
+      tags:
+        - python
+
+- name: Provision Hashicorp Vault
+  hosts: vault_instances
+  become: true
+  become_user: root
+  vars:
+    consul_config_path: "/etc/consul"
+    consul_debug: true
+  pre_tasks:
+    - name: Read ACL master token from first Consul server
+      delegate_to: "{{ groups.consul_instances[0] }}"
+      command: "cat {{ consul_config_path }}/config.json"
+      register: config_read
+      no_log: true
+      changed_when: false
+      run_once: true
+
+    - name: Save ACL master token from Consul configuration
+      set_fact:
+        vault_consul_token: "{{ config_read.stdout | from_json | json_query(query) }}"
+      vars:
+        query: "acl.tokens.master"
+      no_log:  true
+
+  roles:
+    - role: ansible-vault
+      tags: 'vault'
+
+    - role: vault-admin
+      environment:
+        VAULT_TOKEN: "{{ lookup('env','VAULT_TOKEN') }}"
+      tags: 'vault_admin'
+
+    - role: vault-policies
+      environment:
+        VAULT_TOKEN: "{{ lookup('env','VAULT_TOKEN') }}"
+      tags: 'vault_policies'

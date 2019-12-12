@@ -1,0 +1,23 @@
+#!/usr/bin/env ansible-playbook
+- hosts: all
+  gather_facts: false
+  become: true
+
+  tasks:
+    - name: 'add packages for security audit'
+      yum:
+        name:
+          - openscap-scanner
+          - scap-security-guide
+        state: present
+
+    - name: 'run the SCAP tool and create report'
+      command: "oscap xccdf eval \
+        --profile xccdf_org.ssgproject.content_profile_standard \
+        --fetch-remote-resources \
+        --report /vagrant/security-report.html \
+        /usr/share/xml/scap/ssg/content/ssg-centos7-ds.xml"
+      no_log: false
+      ignore_errors: true
+
+...
