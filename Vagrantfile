@@ -15,7 +15,7 @@ Vagrant.configure("2") do |config|
     exec "vagrant #{ARGV.join' '}"
   end
   config.vm.box = "dockpack/centos7"
-  config.vm.box_check_update = false
+  config.vm.box_check_update = true
   if Vagrant.has_plugin?("vagrant-vbguest")
     config.vbguest.auto_update = false
   end
@@ -35,7 +35,7 @@ Vagrant.configure("2") do |config|
     virtualbox.customize ["modifyvm", :id, "--vram", "64"]
   end
 
-  config.vm.define :jumphost, autostart: true, primary: true do |host_config|
+  config.vm.define :jumphost, autostart: false, primary: true do |host_config|
     host_config.vm.box = "dockpack/centos7"
     host_config.vm.hostname = "jumphost"
     host_config.vm.network "private_network", ip: "192.168.122.5"
