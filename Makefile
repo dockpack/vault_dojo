@@ -61,7 +61,7 @@ vagrant-box-add: packer/centos7.box
 .PHONY: boxtest                  # test box with virtualbox
 boxtest:
 	vagrant up --no-provision --provider virtualbox jumphost
-	(cd ansible && audit.yml)
+	(cd ansible && ./audit.yml)
 
 clean:
 	vagrant destroy -f
