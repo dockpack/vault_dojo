@@ -266,7 +266,7 @@
   "variables": {
     "arm_client_id": "{{env `ARM_CLIENT_ID`}}",
     "arm_client_secret": "{{env `ARM_CLIENT_SECRET`}}",
-    "arm_image_sku": "7.6",
+    "arm_image_sku": "7.7",
     "arm_location": "{{env `ARM_LOCATION`}}",
     "arm_resource_group": "{{env `ARM_RESOURCE_GROUP`}}images",
     "arm_storage_account": "{{env `ARM_STORAGE_ACCOUNT`}}images",
@@ -278,11 +278,11 @@
     "gcp_region": "{{env `CLOUDSDK_COMPUTE_REGION`}}",
     "gcp_zone": "{{env `CLOUDSDK_COMPUTE_ZONE`}}",
     "git_tag": "{{env `GIT_TAG`}}",
-    "iso_checksum": "714acc0aefb32b7d51b515e25546835e55a90da9fb00417fbee2d03a62801efd",
-    "iso_url1": "file:///Users/Shared/CentOS-7-x86_64-Minimal-1804.iso",
-    "iso_url2": "https://buildlogs.centos.org/rolling/7/isos/x86_64/CentOS-7-x86_64-Minimal-1804.iso",
-    "image": "centos7",
+    "iso_checksum": "9a2c47d97b9975452f7d582264e9fc16d108ed8252ac6816239a3b58cef5c53d",
+    "iso_url1": "file:///Users/Shared/CentOS-7-x86_64-Minimal-1908.iso",
+    "iso_url2": "https://buildlogs.centos.org/rolling/7/isos/x86_64/CentOS-7-x86_64-Minimal-1908.iso",
+    "image": "dockpack7",
     "vagrantcloud_token": "{{ env `VAGRANT_CLOUD_TOKEN` }}",
-    "version": "7.6.{{ timestamp }}"
+    "version": "7.7.{{ timestamp }}"
   }
 }
