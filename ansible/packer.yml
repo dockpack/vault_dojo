@@ -6,7 +6,7 @@
   become: true
   vars:
     manage_kernel: true
-    X11Forwarding: 'yes'
+    X11Forwarding: 'no'
     secure_ssh_fail2ban: true
     secure_ssh_optional: true
     chroot_sftp_group: true
