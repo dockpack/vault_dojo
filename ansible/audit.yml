@@ -63,15 +63,11 @@
 
     - name: Move the html report
       when: rhelcis7_ciscat.stat.exists
-      shell: "mv -f /root/CIS-CAT_Results/*/report.html /vagrant/{{ inventory_hostname }}.html"
-
-    - name: Move the text report
-      when: rhelcis7_ciscat.stat.exists
-      shell: "mv -f /root/CIS-CAT_Results/*/report.txt /vagrant/{{ inventory_hostname }}.txt"
+      shell: "mv -f /root/CIS-CAT_Results/*/report.html /vagrant/audit-report.html"
       args:
         warn: false
 
-    - name: Clear the text reports
+    - name: Clear the reports
       when: rhelcis7_ciscat.stat.exists
       shell: "rm -rf /root/CIS-CAT_Results/*"
 
