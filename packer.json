@@ -281,7 +281,7 @@
     "iso_checksum": "9a2c47d97b9975452f7d582264e9fc16d108ed8252ac6816239a3b58cef5c53d",
     "iso_url1": "file:///Users/Shared/CentOS-7-x86_64-Minimal-1908.iso",
     "iso_url2": "https://buildlogs.centos.org/rolling/7/isos/x86_64/CentOS-7-x86_64-Minimal-1908.iso",
-    "image": "dockpack7",
+    "image": "centos7",
     "vagrantcloud_token": "{{ env `VAGRANT_CLOUD_TOKEN` }}",
     "version": "7.7.{{ timestamp }}"
   }
