@@ -1,6 +1,14 @@
 #!/usr/bin/env ansible-playbook
 ---
 
+- name: Prepare firewalld
+  hosts: consul_instances:vault_instances
+  become: true
+
+  roles:
+    - role: firewalld
+      tags: firewalld
+
 - name: Provision Consul
   hosts: consul_instances
   become: true
