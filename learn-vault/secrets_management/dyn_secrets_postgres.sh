@@ -36,4 +36,7 @@ echo 'Create a new token with app policy'
 MY_TOKEN=$(vault token create -policy="apps" -format=json -field=token|jq -r)
 
 echo 'Get database access'
-VAULT_TOKEN=$MY_TOKEN vault read database/creds/readonly
+VAULT_TOKEN=$MY_TOKEN PGC=$(vault read -format=json database/creds/readonly)
+export PGUSER=`echo $PGC | jq -r '.data.username'`
+export PGPASSWORD=`echo $PGC | jq -r '.data.password'`
+psql -h 127.0.0.1 postgres
