@@ -20,6 +20,8 @@ case "$PACKER_BUILDER_TYPE" in
 
     # set password
     echo "vagrant" | passwd --stdin vagrant
+    chage --mindays 7 vagrant
+    chage --maxdays 90 vagrant
     ;;
 
   *)

@@ -16,9 +16,10 @@ case "$PACKER_BUILDER_TYPE" in
     umount /tmp/vbox;
     rm -rf /tmp/vbox;
     rm -f $HOME_DIR/*.iso;
-    chown vboxadd /run/vboxadd
+    mkdir /run/vboxadd
+    chown vboxadd:bin /run/vboxadd
     chmod 700 /run/vboxadd
-
+    usermod -s /sbin/nologin vboxadd
     yum -y erase gcc make perl cpp libstdc++-devel kernel-devel kernel-headers
     yum -y clean all
 
