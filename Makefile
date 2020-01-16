@@ -36,10 +36,6 @@ vagrant: ansible/files/ssh/trusted-user-ca-keys.pub
 	vagrant up --no-provision
 	vagrant provision
 
-.PHONY: googlecompute            # create VM image for google compute with Packer
-googlecompute:
-	/usr/local/bin/packer build -force -only=googlecompute packer.json
-
 .PHONY: azure-arm                # create VM image for Azure with Packer
 azure-arm:
 	@echo arm-centos-image
