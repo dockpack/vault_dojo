@@ -27,6 +27,8 @@ ansible/files/ssh/trusted-user-ca-keys.pub:
 	mkdir -p ansible/files/ssh/
 	chmod -R go-rwx ansible/files/ssh/
 	ssh-keygen -f ansible/files/ssh/trusted-user-ca-keys -t ed25519 -a 500 -C trusted-user-ca
+	mv ansible/files/ssh/trusted-user-ca-keys ~/.ssh/trusted-user-ca
+  chmod 400 ~/.ssh/trusted-user-ca
 
 .PHONY: trust                    # Create SSH CA authority
 trust: ansible/files/ssh/trusted-user-ca-keys.pub
