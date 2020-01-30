@@ -73,18 +73,21 @@
     - unseal
     - seal
 
+# yamllint disable rule:line-length
 - name: initialize Hashicorp Vault
   delegate_to: "{{ groups.vault_instances[0] }}"
   run_once: true
   when: "'{{ check_result.status }}' == '501'"
-  no_log: true
+  no_log: false
   environment:
     VAULT_ADDR: "https://{{ groups.vault_instances[0] }}:{{ vault_port }}"
     VAULT_CACERT: "{{ vault_tls_config_path }}/{{ vault_tls_ca_file }}"
-  command: vault operator init -format=json
+  command: vault operator init -key-shares=5 -key-threshold=2 -format=json \
+    -pgp-keys="keybase:{{ kb1 }},keybase:{{ kb2 }},keybase:{{ kb3 }},keybase:{{ kb4 }},keybase:{{ kb5 }}"
   register: inited
   tags:
     - init
+# yamllint enable
 
 - name: save Vault credentials as pretty JSON
   delegate_to: localhost
