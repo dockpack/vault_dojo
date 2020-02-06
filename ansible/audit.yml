@@ -1,6 +1,7 @@
 #!/usr/bin/env ansible-playbook
 
-- hosts: jumphost
+- name: Run CIS-CAT Pro Audit (Licensed)
+  hosts: all
   gather_facts: false
   become: true
   vars:
@@ -14,6 +15,7 @@
       yum:
         name: unzip
         state: present
+
     - name: Ignore the rest when you are not a CIS Member
       unarchive:
         src: "{{ member_dir }}/{{ ciscat }}"
