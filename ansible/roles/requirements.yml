@@ -24,6 +24,11 @@
   scm: git
   version: master
 
+- src: https://github.com/dockpack/gpg_agent.git
+  name: dockpack.gpg_agent
+  scm: git
+  version: master
+
 - src: https://github.com/dockpack/ansible-auditd.git
   name: dockpack.ansible-auditd
   scm: git
