@@ -26,6 +26,7 @@ galaxy:
 ansible/files/ssh/trusted-user-ca-keys.pub:
 	mkdir -p ansible/files/ssh/
 	chmod -R go-rwx ansible/files/ssh/
+	@echo generating trusted-user-ca-keys for signed ssh keys
 	ssh-keygen -f ansible/files/ssh/trusted-user-ca-keys -t ed25519 -a 500 -C trusted-user-ca
 	mv ansible/files/ssh/trusted-user-ca-keys ~/.ssh/trusted-user-ca
 	chmod 400 ~/.ssh/trusted-user-ca
