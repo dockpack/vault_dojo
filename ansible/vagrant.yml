@@ -82,6 +82,5 @@
   become: true
   roles:
     - role: leonallen22.ansible_role_keybase
-    - role: gpg_agent
+    - role: dockpack.gpg_agent
     - role: dockpack.secure_ssh
-    - role: dockpack.hardened7

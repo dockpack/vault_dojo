@@ -7,16 +7,8 @@
   version: master
 
 - src: brianshumate.consul
-# Fork
-# https://github.com/dockpack/ansible-consul.git
-#  scm: git
-#  version: develop
 
 - src: brianshumate.vault
-# Fork
-# https://github.com/dockpack/ansible-vault.git
-#  scm: git
-#  version: develop
 
 # Fork
 - src: https://github.com/bbaassssiiee/ansible-role-keybase.git
@@ -24,15 +16,22 @@
   scm: git
   version: master
 
-- src: https://github.com/dockpack/gpg_agent.git
-  name: dockpack.gpg_agent
-  scm: git
-  version: master
+- src: dockpack.gpg_agent
 
-- src: https://github.com/dockpack/ansible-auditd.git
-  name: dockpack.ansible-auditd
-  scm: git
-  version: master
+- src: dockpack.secure_ssh
+
+- src: dockpack.hardened7
+
+- src: dockpack.base_epel
+
+- src: dockpack.base_python
+
+- src: dockpack.base_crontab
+
+- src: dockpack.base_nettime
+
+- src: dockpack.base_rsyslog
+
 
 - src: https://github.com/dockpack/consul-policies.git
   name: consul-policies
@@ -41,46 +40,6 @@
 
 - src: https://github.com/bbaassssiiee/painless-password-rotation.git
   name: painless-password-rotation
-  scm: git
-  version: master
-
-- src: https://github.com/dockpack/secure_ssh.git
-  name: dockpack.secure_ssh
-  scm: git
-  version: master
-
-- src: https://github.com/dockpack/hardened7.git
-  name: dockpack.hardened7
-  scm: git
-  version: master
-
-- src: https://github.com/dockpack/ansible-auditd.git
-  name: dockpack.ansible-auditd
-  scm: git
-  version: master
-
-- src: https://github.com/dockpack/base_epel.git
-  name: dockpack.base_epel
-  scm: git
-  version: master
-
-- src: https://github.com/dockpack/base_python.git
-  name: dockpack.base_python
-  scm: git
-  version: master
-
-- src: https://github.com/dockpack/base_crontab.git
-  name: dockpack.base_crontab
-  scm: git
-  version: master
-
-- src: https://github.com/dockpack/base_nettime.git
-  name: dockpack.base_nettime
-  scm: git
-  version: master
-
-- src: https://github.com/dockpack/base_rsyslog.git
-  name: dockpack.base_rsyslog
   scm: git
   version: master
 
