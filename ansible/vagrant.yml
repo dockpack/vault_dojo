@@ -15,7 +15,7 @@
 
   roles:
     - role: dockpack.base_epel
-    - role: ansible-consul
+    - role: brianshumate.consul
       vars:
         consul_acl_enable: true
         consul_acl_default_policy: 'deny'
@@ -67,7 +67,7 @@
       tags: 'vault'
 
   roles:
-    - role: ansible-vault
+    - role: brianshumate.vault
       tags: 'vault'
 
     - role: vault-admin
@@ -75,7 +75,13 @@
         VAULT_TOKEN: "{{ lookup('env','VAULT_TOKEN') }}"
       tags: 'vault_admin'
 
-    - role: vault-policies
-      environment:
-        VAULT_TOKEN: "{{ lookup('env','VAULT_TOKEN') }}"
-      tags: 'vault_policies'
+    - role: dockpack.keybase_unseal
+
+- name: Create bastion enclave
+  hosts: bastion
+  become: true
+  roles:
+    - role: leonallen22.ansible_role_keybase
+    - role: gpg_agent
+    - role: dockpack.secure_ssh
+    - role: dockpack.hardened7
