@@ -1,9 +1,10 @@
 ---
-consul_version: '1.6.0'
+consul_version: '1.6.3'
 consul_iface: enp0s8
 consul_install_remotely: true
 consul_datacenter: "dc1"
 consul_acl_datacenter: "dc1"
+consul_acl_enable: true
 consul_domain: "consul"
 # DNS resolvers
 consul_recursors: ['8.8.4.4', '8.8.8.8']
