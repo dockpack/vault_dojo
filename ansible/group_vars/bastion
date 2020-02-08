@@ -5,7 +5,6 @@ manage_ssh_groups: true
 # Confine users to seuser classes
 semanage_ssh_users: true
 manage_ssh_users: true
-distribute_ssh_keys: true
 
 non_users:
   - ftp
