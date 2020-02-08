@@ -5,9 +5,11 @@ manage_ssh_groups: true
 # Confine users to seuser classes
 semanage_ssh_users: true
 manage_ssh_users: true
+distribute_ssh_keys: true
 
 non_users:
   - ftp
+
 ssh_users:
   - username: vagrant
     shell: /bin/bash
@@ -17,14 +19,22 @@ ssh_users:
     shell: /bin/bash
     group: wheel
     seuser: staff_u
-  - username: guest
+  - username: basmeijer
     shell: /bin/bash
-    group: games
-    seuser: guest_u
-  - username: kiosk
+    group: staff
+    seuser: user_u
+  - username: fbezema
     shell: /bin/bash
-    group: games
-    seuser: xguest_u
+    group: staff
+    seuser: user_u
+  - username: ksatirli
+    shell: /bin/bash
+    group: staff
+    seuser: user_u
+  - username: ferhaty
+    shell: /bin/bash
+    group: staff
+    seuser: user_u
 
 signed_ssh_keys: true
 distribute_ssh_keys: true
