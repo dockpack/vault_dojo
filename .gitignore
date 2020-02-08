@@ -1,7 +1,7 @@
 # you need to create these with Vault
 ansible/files/ssh/trusted-user-ca-keys
 ansible/files/ssh/trusted-user-ca-keys.pub
-
+ansible/files/pubkeys/
 Brewfile.lock.json
 .vagrant
 output-virtualbox-iso
