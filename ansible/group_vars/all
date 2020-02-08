@@ -1,10 +1,11 @@
 ---
 keybase_team: dockpack
-keybase_team_members:
-  ? basmeijer
-  ? fbezema
-  ? ksatirli
-  ? ferhaty
+kbt:
+  - basmeijer
+  - fbezema
+  - ksatirli
+  - ferhaty
+
 vault_bin_path: /usr/bin
 consul_bin_path: /usr/bin
 vault_tls_ca_file: consul-agent-ca.pem
