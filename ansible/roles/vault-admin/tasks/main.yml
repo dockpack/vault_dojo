@@ -33,27 +33,4 @@
     - init
     - config
 
-- name: check presence of audit.log
-  delegate_to: "{{ groups.vault_instances[0] }}"
-  run_once: true
-  stat:
-    path: /var/log/vault/audit.log
-  register: audit_file
-  tags:
-    - audit
-
-- name: audit.log for Hashicorp Vault
-  delegate_to: "{{ groups.vault_instances[0] }}"
-  run_once: true
-  no_log: true
-  when: not audit_file.stat.exists
-  environment:
-    VAULT_ADDR: "https://{{ groups.vault_instances[0] }}:{{ vault_port }}"
-    VAULT_CACERT: "{{ vault_tls_config_path }}/{{ vault_tls_ca_file }}"
-    VAULT_TOKEN: "{{ root_token }}"
-  command: >
-    vault audit enable -path="vault_audit_1" file \
-    file_path=/var/log/vault/audit.log
-  tags:
-    - audit
 ...
