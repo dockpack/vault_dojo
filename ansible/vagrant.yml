@@ -1,6 +1,36 @@
 #!/usr/bin/env ansible-playbook
 ---
 
+- name: Enable hosts with python API
+  hosts: consul_instances
+  become: true
+
+  roles:
+    - role: dockpack.base_python
+      vars:
+        python_epel:
+          - python-pip
+      tags: python
+
+  post_tasks:
+    - name: install python libraries
+      command: "/opt/rh/rh-python36/root/usr/bin/pip3 install {{ item }}"
+      with_items:
+        - python-consul
+        - dnspython
+        - hvac
+      tags:
+        - python
+
+- name: Create bastion enclave
+  hosts: bastion
+  become: true
+  roles:
+    - role: leonallen22.ansible_role_keybase
+    - role: dockpack.gpg_agent
+    - role: dockpack.secure_ssh
+    - role: keybase_station
+
 - name: Prepare firewalld
   hosts: consul_instances:vault_instances
   become: true
@@ -24,22 +54,7 @@
     - role: consul-policies
       tags: consul_policies
 
-- name: Enable Consul hosts with python API
-  hosts: consul_instances
-  become: true
 
-  roles:
-    - role: dockpack.base_python
-      vars:
-        python_epel:
-          - python-pip
-      tags: python
-
-  post_tasks:
-    - name: install python-consul
-      command: /opt/rh/rh-python36/root/usr/bin/pip3 install python-consul
-      tags:
-        - python
 
 - name: Provision Hashicorp Vault
   hosts: vault_instances
@@ -76,11 +91,3 @@
       tags: 'vault_admin'
 
     - role: dockpack.keybase_unseal
-
-- name: Create bastion enclave
-  hosts: bastion
-  become: true
-  roles:
-    - role: leonallen22.ansible_role_keybase
-    - role: dockpack.gpg_agent
-    - role: dockpack.secure_ssh
