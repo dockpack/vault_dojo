@@ -37,7 +37,6 @@ trust: ansible/files/ssh/trusted-user-ca-keys.pub
 .PHONY: vagrant                  # Create cluster on vagrant
 vagrant:
 	vagrant up --no-provision
-	vagrant provision
 
 .PHONY: provision                # Provision Consul and Vault to cluster
 provision: ansible/files/ssh/trusted-user-ca-keys.pub
