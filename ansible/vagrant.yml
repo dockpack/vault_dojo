@@ -29,7 +29,6 @@
     - role: leonallen22.ansible_role_keybase
     - role: dockpack.gpg_agent
     - role: dockpack.secure_ssh
-    - role: keybase_station
 
 - name: Prepare firewalld
   hosts: consul_instances:vault_instances
