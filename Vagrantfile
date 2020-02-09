@@ -66,7 +66,7 @@ Vagrant.configure("2") do |config|
           ansible.galaxy_roles_path = "ansible/roles"
           ansible.inventory_path = "ansible/inventories/vagrant.ini"
           ansible.playbook = "ansible/vagrant.yml"
-          ansible.verbose = "v"
+          ansible.verbose = ""
           ansible.groups = {
             "vault_instances" => ["server01.consul"],
             "consul_instances" => ["server0[1:3].consul"],
