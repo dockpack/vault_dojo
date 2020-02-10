@@ -53,8 +53,6 @@
     - role: consul-policies
       tags: consul_policies
 
-
-
 - name: Provision Hashicorp Vault
   hosts: vault_instances
   become: true
