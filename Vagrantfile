@@ -35,14 +35,29 @@ Vagrant.configure("2") do |config|
     virtualbox.customize ["modifyvm", :id, "--vram", "64"]
   end
 
-  config.vm.define :jumphost, autostart: true, primary: true do |host_config|
+  config.vm.define :bastion, autostart: true, primary: true do |host_config|
     host_config.vm.box = "dockpack/centos7"
-    host_config.vm.hostname = "jumphost"
+    host_config.vm.hostname = "bastion"
     host_config.vm.network "private_network", ip: "192.168.122.5"
     host_config.vm.network "forwarded_port", id: 'ssh', guest: 22, host: 2205, auto_correct: false
     host_config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
     host_config.vm.provider "virtualbox" do |vb|
-      vb.name = "jumphost"
+      vb.name = "bastion"
+      vb.customize ["modifyvm", :id, "--memory", 512]
+      vb.customize ["modifyvm", :id, "--vram", "64"]
+    end
+  end
+
+  config.vm.define :client, autostart: true, primary: true do |host_config|
+    host_config.vm.box = "dockpack/centos7"
+    host_config.vm.hostname = "client.consul"
+    host_config.vm.network "private_network", ip: "192.168.122.6"
+    host_config.vm.network "forwarded_port", id: 'ssh', guest: 22, host: 2206, auto_correct: false
+    host_config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
+    host_config.vm.provider "virtualbox" do |vb|
+      vb.name = "client.consul"
+      vb.customize ["modifyvm", :id, "--memory", 2048]
+      vb.customize ["modifyvm", :id, "--vram", "64"]
     end
   end
 
@@ -62,7 +77,7 @@ Vagrant.configure("2") do |config|
           ansible.compatibility_mode = "2.0"
           # Disable default limit to connect to all the servers
           ansible.limit = "all"
-          ansible.galaxy_role_file = "ansible/roles/requirements.yml"
+#          ansible.galaxy_role_file = "ansible/roles/requirements.yml"
           ansible.galaxy_roles_path = "ansible/roles"
           ansible.inventory_path = "ansible/inventories/vagrant.ini"
           ansible.playbook = "ansible/vagrant.yml"
