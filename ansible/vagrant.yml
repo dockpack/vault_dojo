@@ -22,14 +22,6 @@
       tags:
         - python
 
-- name: Create bastion enclave
-  hosts: bastion
-  become: true
-  roles:
-    - role: leonallen22.ansible_role_keybase
-    - role: dockpack.gpg_agent
-    - role: dockpack.secure_ssh
-
 - name: Prepare firewalld
   hosts: consul_instances:vault_instances
   become: true
@@ -88,3 +80,12 @@
       tags: 'vault_admin'
 
     - role: dockpack.keybase_unseal
+
+- name: Create bastion enclave
+  hosts: bastion
+  become: true
+  roles:
+    - role: leonallen22.ansible_role_keybase
+    - role: dockpack.gpg_agent
+    - role: dockpack.secure_ssh
+
