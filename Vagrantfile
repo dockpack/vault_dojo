@@ -77,7 +77,7 @@ Vagrant.configure("2") do |config|
           ansible.compatibility_mode = "2.0"
           # Disable default limit to connect to all the servers
           ansible.limit = "all"
-#          ansible.galaxy_role_file = "ansible/roles/requirements.yml"
+          ansible.galaxy_role_file = "ansible/roles/requirements.yml"
           ansible.galaxy_roles_path = "ansible/roles"
           ansible.inventory_path = "ansible/inventories/vagrant.ini"
           ansible.playbook = "ansible/vagrant.yml"
