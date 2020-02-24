@@ -65,6 +65,7 @@ boxtest:
 	vagrant up --no-provision --provider virtualbox bastion
 	(cd ansible && ./audit.yml)
 
+.PHONY: clean                    # cleanup dev environment
 clean:
 	vagrant destroy -f
 	rm -f ansible/files/ssh/trusted-user-ca-keys ansible/files/ssh/trusted-user-ca-keys.pub
