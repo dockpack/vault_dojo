@@ -31,7 +31,7 @@ ansible/files/ssh/trusted-user-ca-keys.pub:
 	@mv ansible/files/ssh/trusted-user-ca-keys ~/.ssh/trusted-user-ca
 	@chmod 400 ~/.ssh/trusted-user-ca
 
-.PHONY: trust                    # Create SSH CA authority
+.PHONY: trust                    # Create SSH CA authority (Vault can do it better)
 trust: ansible/files/ssh/trusted-user-ca-keys.pub
 
 .PHONY: vagrant                  # Create cluster on vagrant
@@ -39,7 +39,7 @@ vagrant:
 	vagrant up --no-provision
 
 .PHONY: provision                # Provision Consul and Vault to cluster
-provision: ansible/files/ssh/trusted-user-ca-keys.pub
+provision:
 	vagrant provision
 
 .PHONY: azure-arm                # create VM image for Azure with Packer
@@ -68,5 +68,4 @@ boxtest:
 .PHONY: clean                    # cleanup dev environment
 clean:
 	vagrant destroy -f
-	rm -f ansible/files/ssh/trusted-user-ca-keys ansible/files/ssh/trusted-user-ca-keys.pub
 	rm -rf .vagrant packer/* packer_cache/* output-virtualbox-iso/*
