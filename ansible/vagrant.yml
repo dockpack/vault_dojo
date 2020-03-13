@@ -36,7 +36,7 @@
 
   roles:
     - role: dockpack.base_epel
-    - role: brianshumate.consul
+    - role: ansible-consul
       vars:
         consul_acl_enable: true
         consul_acl_default_policy: 'deny'
@@ -71,7 +71,7 @@
       tags: 'vault'
 
   roles:
-    - role: brianshumate.vault
+    - role: ansible-vault
       tags: 'vault'
 
     - role: vault-admin
