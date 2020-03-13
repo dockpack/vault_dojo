@@ -6,9 +6,15 @@
   scm: git
   version: master
 
-- src: brianshumate.consul
+- src: https://github.com/ansible-community/ansible-consul.git
+  name: ansible-consul
+  scm: git
+  version: master
 
-- src: brianshumate.vault
+- src: https://github.com/ansible-community/ansible-consul.git
+  name: ansible-vault
+  scm: git
+  version: master
 
 # Fork
 - src: https://github.com/bbaassssiiee/ansible-role-keybase.git
