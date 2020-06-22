@@ -11,7 +11,7 @@
   scm: git
   version: master
 
-- src: https://github.com/ansible-community/ansible-consul.git
+- src: https://github.com/ansible-community/ansible-vault.git
   name: ansible-vault
   scm: git
   version: master
