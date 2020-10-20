@@ -4,7 +4,7 @@ help:
 	@echo 'available make targets:'
 	@grep PHONY: Makefile | cut -d: -f2 | sed '1d;s/^/make/'
 
-all: mac_apps dependencies trust vagrant
+all: mac_apps dependencies pki trust vagrant
 
 .PHONY: homebrew                 # Install Homebrew packagemanager
 /usr/local/bin/brew:
@@ -33,6 +33,12 @@ ansible/files/ssh/trusted-user-ca-keys.pub:
 
 .PHONY: trust                    # Create SSH CA authority (Vault can do it better)
 trust: ansible/files/ssh/trusted-user-ca-keys.pub
+
+.PHONY: pki
+pki:
+	(cd ansible/files/tls && ./create_ca.sh)
+	(cd ansible/files/tls && ./server_cert.sh)
+	(cd ansible/files/tls && ./client_cert.sh)
 
 .PHONY: vagrant                  # Create cluster on vagrant
 vagrant:
