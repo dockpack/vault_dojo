@@ -5,8 +5,13 @@ then
   # Install EPEL repository.
   yum -y --enablerepo=extras install epel-release
   yum install -y python-pip python-devel
+  yum -y install python-jmespath || pip install jmespath
 
   # Install Ansible.
   yum -y install ansible ansible-doc ansible-lint python-setuptools
-  yum -y install python-jmespath || pip install jmespath
+else
+  dnf makecache
+  dnf install -y epel-release
+  dnf makecache
+  dnf install -y ansible
 fi
