@@ -5,6 +5,9 @@
   hosts: all
   become: true
 
+  vars:
+    manage_password_compliance: false
+
   roles:
     - {role: dockpack.base_epel, tags: 'epel'}
     - {role: dockpack.secure_ssh, tags: 'ssh'}
