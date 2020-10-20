@@ -1,5 +1,4 @@
 ---
-consul_version: '1.6.3'
 consul_iface: enp0s8
 consul_install_remotely: true
 consul_datacenter: "dc1"
