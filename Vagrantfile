@@ -38,7 +38,7 @@ Vagrant.configure("2") do |config|
   config.vm.define :bastion, autostart: true, primary: true do |host_config|
     host_config.vm.box = "dockpack/centos7"
     host_config.vm.hostname = "bastion"
-    host_config.vm.network "private_network", ip: "192.168.10.97"
+    host_config.vm.network "private_network", ip: "10.0.3.97"
     host_config.vm.network "forwarded_port", id: 'ssh', guest: 22, host: 2297, auto_correct: false
     host_config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
     host_config.vm.provider "virtualbox" do |vb|
@@ -51,7 +51,7 @@ Vagrant.configure("2") do |config|
   config.vm.define :client, autostart: true, primary: true do |host_config|
     host_config.vm.box = "dockpack/centos7"
     host_config.vm.hostname = "client.consul"
-    host_config.vm.network "private_network", ip: "192.168.10.98"
+    host_config.vm.network "private_network", ip: "10.0.3.98"
     host_config.vm.network "forwarded_port", id: 'ssh', guest: 22, host: 2298, auto_correct: false
     host_config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
     host_config.vm.provider "virtualbox" do |vb|
@@ -68,7 +68,7 @@ Vagrant.configure("2") do |config|
       server.vm.provider "virtualbox" do |vb|
         vb.name = "server0#{server_id}.consul"
       end
-      server.vm.network "private_network", ip: "192.168.10.10#{server_id}"
+      server.vm.network "private_network", ip: "10.0.3.10#{server_id}"
       server.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
       # Only execute once the Ansible provisioner,
       # when all the servers are up and ready.
