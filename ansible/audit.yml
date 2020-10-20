@@ -1,7 +1,7 @@
 #!/usr/bin/env ansible-playbook
 
-- name: Run CIS-CAT Pro Audit (Licensed)
-  hosts: all
+- name: Run Audit 
+  hosts: bastion
   gather_facts: false
   become: true
   vars:
@@ -15,6 +15,13 @@
       yum:
         name: unzip
         state: present
+
+    - name: Add openscap-scanner
+      yum:
+        name: openscap-scanner
+        state: present
+      tags:
+        - openscap
 
     - name: Ignore the rest when you are not a CIS Member
       unarchive:
@@ -65,10 +72,18 @@
 
     - name: Move the html report
       when: rhelcis7_ciscat.stat.exists
-      shell: "mv -f /root/CIS-CAT_Results/*/report.html /vagrant/audit-report.html"
+      shell: "mv -f /root/CIS-CAT_Results/*/report.html /tmp/report.html"
       args:
         warn: false
 
+    - name: Get the report
+      fetch:
+        src: /tmp/report.html
+        dest: /Users/Shared/
+        flat: true
+      tags:
+        - fetch
+      
     - name: Clear the reports
       when: rhelcis7_ciscat.stat.exists
       shell: "rm -rf /root/CIS-CAT_Results/*"
