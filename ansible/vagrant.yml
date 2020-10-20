@@ -80,6 +80,7 @@
       tags: 'vault_admin'
 
     - role: dockpack.keybase_unseal
+      tags: 'unseal'
 
 - name: Create bastion enclave
   hosts: bastion
