@@ -34,21 +34,27 @@ ansible/files/ssh/trusted-user-ca-keys.pub:
 .PHONY: trust                    # Create SSH CA authority (Vault can do it better)
 trust: ansible/files/ssh/trusted-user-ca-keys.pub
 
-.PHONY: pki                      # Create TLS CA authority and certificates for dojo.
-pki:
+ansible/files/tls/consul-agent-ca-key.pem:
 	(cd ansible/files/tls && ./create_ca.sh)
+
+ansible/files/tls/dc1-server-consul-3-key.pem:
 	(cd ansible/files/tls && ./server_cert.sh)
 	(cd ansible/files/tls && ./server_cert.sh)
 	(cd ansible/files/tls && ./server_cert.sh)
 	(cd ansible/files/tls && ./server_cert.sh)
+
+ansible/files/tls/dc1-client-consul-0-key.pem:
 	(cd ansible/files/tls && ./client_cert.sh)
+
+.PHONY: pki                      # Create TLS CA authority and certificates for dojo.
+pki: ansible/files/tls/consul-agent-ca-key.pem ansible/files/tls/dc1-server-consul-3-key.pem ansible/files/tls/dc1-client-consul-0-key.pem
 
 .PHONY: vagrant                  # Create cluster on vagrant
 vagrant:
 	vagrant up --no-provision
 
 .PHONY: provision                # Provision Consul and Vault to cluster
-provision:
+provision: ansible/files/tls/consul-agent-ca-key.pem ansible/files/tls/dc1-server-consul-3-key.pem ansible/files/tls/dc1-client-consul-0-key.pem
 	vagrant provision
 
 .PHONY: azure-arm                # create VM image for Azure with Packer
