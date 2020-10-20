@@ -34,9 +34,12 @@ ansible/files/ssh/trusted-user-ca-keys.pub:
 .PHONY: trust                    # Create SSH CA authority (Vault can do it better)
 trust: ansible/files/ssh/trusted-user-ca-keys.pub
 
-.PHONY: pki
+.PHONY: pki                      # Create TLS CA authority and certificates for dojo.
 pki:
 	(cd ansible/files/tls && ./create_ca.sh)
+	(cd ansible/files/tls && ./server_cert.sh)
+	(cd ansible/files/tls && ./server_cert.sh)
+	(cd ansible/files/tls && ./server_cert.sh)
 	(cd ansible/files/tls && ./server_cert.sh)
 	(cd ansible/files/tls && ./client_cert.sh)
 
@@ -75,3 +78,4 @@ boxtest:
 clean:
 	vagrant destroy -f
 	rm -rf .vagrant packer/* packer_cache/* output-virtualbox-iso/*
+	(cd ansible/files/tls && rm -f *.pem)
