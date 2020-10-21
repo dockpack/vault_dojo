@@ -4,6 +4,7 @@ vault_policies:
   - engines-policy
   - policies-policy
   - secret-policy
+  - transit-policy
 
 vault_user: vault
 vault_group: bin
