@@ -82,6 +82,23 @@
     - role: dockpack.keybase_unseal
       tags: 'unseal'
 
+    - role: vault-policies
+      environment:
+        VAULT_TOKEN: "{{ lookup('env','VAULT_TOKEN') }}"
+      tags: 'vault_policies'
+
+- name: Create boundary backend
+  hosts: client
+  become: true
+  vars_files:
+    - roles/ansible-vault/defaults/main.yml
+  roles:
+    - role: dockpack.base_epel
+    - role: dockpack.base_postgres
+      tags: 'postgres'
+    - role: arctiqjacob-boundary
+      tags: 'boundary'
+
 - name: Create bastion enclave
   hosts: bastion
   become: true
