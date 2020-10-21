@@ -46,6 +46,11 @@
 
 - src: dockpack.base_postgres
 
+- src: https://github.com/cogini/ansible-role-postgresql-ca.git
+  name: cogini.postgresql-ssl
+  scm: git
+  version: master
+
 - src: https://github.com/dockpack/consul-policies.git
   name: consul-policies
   scm: git

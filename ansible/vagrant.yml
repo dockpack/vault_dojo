@@ -92,10 +92,23 @@
   become: true
   vars_files:
     - roles/ansible-vault/defaults/main.yml
+
   roles:
     - role: dockpack.base_epel
-    - role: dockpack.base_postgres
+    - role: cogini.postgresql-ssl
       tags: 'postgres'
+      vars:
+        postgresql_ca_subj_base: "/C=NL/O=Dockpack"
+        postgresql_ca_server_ca_pass: "{{ vault_ca_secret }}" # set this in vault
+        postgresql_ca_hostname_fqdn: client.consul
+        postgresql_ca_group: root
+    - role:  dockpack.base_postgres
+      tags: 'postgres'
+      vars:
+        postgresql_ssl: 'on'
+        postgresql_ssl_cert_file: "/etc/ssl/postgresql/server.crt"
+        postgresql_ssl_key_file: "/etc/ssl/postgresql/server.key"
+        postgresql_ssl_ca_file: "/etc/ssl/postgresql/root.crt"
     - role: arctiqjacob-boundary
       tags: 'boundary'
 

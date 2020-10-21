@@ -2,3 +2,4 @@
 # normally this file would be ansible-vault encrypted
 vault_postgres_user: boundary
 vault_postgres_pass: "{{ lookup('env','PG_PASS') }}"
+postgresql_ca_ca_pass: "{{ lookup('env','CA_PASS') }}"

@@ -13,8 +13,8 @@ boundary_tls_ca_file: consul-agent-ca.pem
 boundary_tls_cert_file: dc1-client-consul-0.pem
 boundary_tls_key_file: dc1-client-consul-0-key.pem
 
-base_postgres_mip: 10.0.3.98
-boundary_psql_endpoint: "{{ base_postgres_mip }}"
+
+boundary_psql_endpoint: client.consul
 boundary_psql_username: "{{ vault_postgres_user }}"
 boundary_psql_password: "{{ vault_postgres_pass }}"
 boundary_kms_type: 'transit'  # vault
