@@ -22,8 +22,19 @@
   with_fileglob: "policies/*"
 
 - name: load encrypted Vault credentials
+  become: no
+  delegate_to: localhost
+  run_once: true
   no_log: true
-  include_vars: "{{ vault_credentials }}"
+  shell: "ansible-vault view {{ vault_credentials }} |jq -r .root_token"
+  register: json
+
+- name: set root_token
+  delegate_to: localhost
+  run_once: true
+  no_log: true
+  set_fact:
+    root_token: "{{ json.stdout }}"
 
 - name: register policies
   run_once: true
@@ -31,7 +42,7 @@
   delegate_to: "{{ groups.vault_instances[0] }}"
   environment:
     VAULT_ADDR: "https://{{ groups.vault_instances[0] }}:8200"
-    VAULT_TOKEN: "{{ lookup('env', 'VAULT_TOKEN') }}"
+    VAULT_TOKEN: "{{ root_token }}"
     VAULT_CACERT: "{{ vault_tls_config_path }}/{{ vault_tls_ca_file }}"
   shell: >
        {{ vault_bin_path }}/vault policy write \
