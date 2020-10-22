@@ -82,9 +82,9 @@
     - role: dockpack.keybase_unseal
       tags: 'unseal'
 
+    - role: vault-engines
+      tags: 'vault_engines'
     - role: vault-policies
-      environment:
-        VAULT_TOKEN: "{{ lookup('env','VAULT_TOKEN') }}"
       tags: 'vault_policies'
 
 - name: Create boundary backend
