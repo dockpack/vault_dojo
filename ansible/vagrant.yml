@@ -131,6 +131,8 @@
     - role: arctiqjacob-boundary
       environment:
         VAULT_TOKEN: "{{ root_token }}"
+      vars:
+        boundary_kms_type: 'transit'
       tags: 'boundary'
 
 - name: Create bastion enclave
