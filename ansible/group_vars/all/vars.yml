@@ -6,7 +6,7 @@ kbt:
   - fbezema
   - ksatirli
   - ferhaty
-
+vault_credentials: '/Volumes/Keybase/team/dockpack.vault/vault.json'
 vault_bin_path: /usr/bin
 consul_bin_path: /usr/bin
 boundary_tls_ca_file: consul-agent-ca.pem
