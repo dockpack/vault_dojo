@@ -75,8 +75,6 @@
       tags: 'vault'
 
     - role: vault-admin
-      environment:
-        VAULT_TOKEN: "{{ lookup('env','VAULT_TOKEN') }}"
       tags: 'vault_admin'
 
     - role: dockpack.keybase_unseal
@@ -92,6 +90,27 @@
   become: true
   vars_files:
     - roles/ansible-vault/defaults/main.yml
+
+  pre_tasks:
+
+    - name: load encrypted Vault credentials
+      become: false
+      delegate_to: localhost
+      run_once: true
+      no_log: true
+      shell: "ansible-vault view {{ vault_credentials }} |jq -r .root_token"
+      register: json
+      tags:
+        - boundary
+ 
+    - name: set root_token
+      delegate_to: localhost
+      run_once: true
+      no_log: true
+      set_fact:
+        root_token: "{{ json.stdout }}"
+      tags:
+        - boundary
 
   roles:
     - role: dockpack.base_epel
@@ -110,6 +129,8 @@
         postgresql_ssl_key_file: "/etc/ssl/postgresql/server.key"
         postgresql_ssl_ca_file: "/etc/ssl/postgresql/root.crt"
     - role: arctiqjacob-boundary
+      environment:
+        VAULT_TOKEN: "{{ root_token }}"
       tags: 'boundary'
 
 - name: Create bastion enclave
