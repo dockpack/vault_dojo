@@ -23,10 +23,10 @@
   version: master
 
 # Fork
-#- src: https://github.com/bbaassssiiee/ansible-role-boundary.git
-#  name: arctiqjacob-boundary
-#  scm: git
-#  version: main
+- src: https://github.com/bbaassssiiee/ansible-role-boundary.git
+  name: arctiqjacob-boundary
+  scm: git
+  version: mainline
 
 - src: dockpack.gpg_agent
 
@@ -45,9 +45,10 @@
 - src: dockpack.base_rsyslog
 
 - src: dockpack.base_postgres
+  version: v0.3.1
 
 # Fork
-- src: https://github.com/bbaassssiiee/ansible-role-postgresql-ca.git
+- src: https://github.com/cogini/ansible-role-postgresql-ca.git
   name: cogini.postgresql-ssl
   scm: git
   version: master
