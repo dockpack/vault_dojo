@@ -1,4 +1,4 @@
-ansible==2.8.8
+ansible==3.0.0
 netaddr
 python-consul
 hvac
